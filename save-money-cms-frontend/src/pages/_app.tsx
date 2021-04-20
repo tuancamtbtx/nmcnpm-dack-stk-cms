@@ -40,22 +40,22 @@ interface Context extends AppContext {
 }
 
 
-const MyApp = ({ Component, pageProps, initialMobxStores }: IProps) => {
+const MyApp = ({ Component, pageProps }: IProps) => {
     const isServer: boolean = typeof window === 'undefined'
-    let mobxStores: any = isServer ? initialMobxStores : initializeStores(initialMobxStores)
+    // let mobxStores: any = isServer ? initialMobxStores : initializeStores(initialMobxStores)
     if (pageProps.statusCode) {
         return <ErrorPage statusCode={pageProps.statusCode} />
     }
     return (
-        <Provider {...mobxStores}>
+        <Provider >
             <GlobalStyle />
             <Component {...pageProps} />
         </Provider>
     )
 }
 MyApp.getInitialProps = async (appContext: Context) => {
-    const mobxStores = initializeStores()
-    appContext.ctx.mobxStores = mobxStores
+    // const mobxStores = initializeStores()
+    // appContext.ctx.mobxStores = mobxStores
     const isAuthenticated: boolean = true
     appContext.ctx.isAuthenticated = isAuthenticated
     if (!process.browser) {
@@ -69,7 +69,7 @@ MyApp.getInitialProps = async (appContext: Context) => {
             // await mobxStores.authStore.fetchMe(authToken)
         }
     }
-    appContext.ctx.mobxStores = mobxStores
+    // appContext.ctx.mobxStores = mobxStores
     // appContext.ctx.isAuthenticated = mobxStores.authStore.isAuthenticated
     let appProps: any = {}
     if (App.getInitialProps) {
@@ -80,7 +80,7 @@ MyApp.getInitialProps = async (appContext: Context) => {
     }
     return {
         ...appProps,
-        initialMobxStores: mobxStores
+        // initialMobxStores: mobxStores
     }
 }
 export default MyApp
